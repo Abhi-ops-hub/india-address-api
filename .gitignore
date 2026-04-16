@@ -40,7 +40,7 @@ frontend/coverage/
 
 # Backend specific & Data
 backend/data/db.json       # Ignore database file containing users, api keys, and usage analytics
-data/dataset/*.xls         # Ignore raw Excel dataset files to avoid massive repository sizes
-data/dataset/*.xlsx
-data/dataset/*.csv
-# Note: Add `backend/data/villages/` etc here if you decide the generated JSON files are too large for GitHub 
+data/dataset/              # Ignore raw Excel dataset folder
+backend/data/villages/     # Ignore generated village dataset files
+backend/data/*.json.gz     # Ignore compressed dataset dictionaries
+backend/data/*.json        # Ignore generated dataset dictionaries

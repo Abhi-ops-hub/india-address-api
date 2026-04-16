@@ -1,26 +1,34 @@
 const fs = require('fs');
 const path = require('path');
+const zlib = require('zlib');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
+
+function readJsonGz(filePath) {
+  if (!fs.existsSync(filePath)) return null;
+  const compressed = fs.readFileSync(filePath);
+  const decompressed = zlib.gunzipSync(compressed);
+  return JSON.parse(decompressed.toString('utf-8'));
+}
 
 function loadData(app) {
   console.log('Loading geographical data into memory...');
   const start = Date.now();
 
   try {
-    const states = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'states.json'), 'utf-8'));
-    const districts = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'districts.json'), 'utf-8'));
-    const subdistricts = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'subdistricts.json'), 'utf-8'));
+    const states = readJsonGz(path.join(DATA_DIR, 'states.json.gz'));
+    const districts = readJsonGz(path.join(DATA_DIR, 'districts.json.gz'));
+    const subdistricts = readJsonGz(path.join(DATA_DIR, 'subdistricts.json.gz'));
 
     // Load all village files
     const villagesDir = path.join(DATA_DIR, 'villages');
-    const villageFiles = fs.readdirSync(villagesDir).filter(f => f.endsWith('.json'));
+    const villageFiles = fs.readdirSync(villagesDir).filter(f => f.endsWith('.json.gz'));
     let allVillages = [];
     const villagesByState = {};
 
     for (const vf of villageFiles) {
-      const stateVillages = JSON.parse(fs.readFileSync(path.join(villagesDir, vf), 'utf-8'));
-      const stateId = parseInt(vf.replace('state_', '').replace('.json', ''));
+      const stateVillages = readJsonGz(path.join(villagesDir, vf));
+      const stateId = parseInt(vf.replace('state_', '').replace('.json.gz', ''));
       villagesByState[stateId] = stateVillages;
       allVillages = allVillages.concat(stateVillages);
     }

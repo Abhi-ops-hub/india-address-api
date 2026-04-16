@@ -1,21 +1,3 @@
-{
-  "name": "frontend",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
-  },
-  "devDependencies": {
-    "typescript": "~6.0.2",
-    "vite": "^8.0.4"
-  },
-  "dependencies": {
-    "@vitejs/plugin-react": "^6.0.1",
-    "lucide-react": "^1.8.0",
-    "react-router-dom": "^6.30.3",
-    "recharts": "^3.8.1"
-  }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:276dc07a9072aecd48faeefbc2a1bebd0a7eaa49a99c992c2542038a7537a7c0
+size 419

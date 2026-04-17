@@ -25,8 +25,20 @@ app.use(helmet({
 }));
 app.use(compression());
 app.use(morgan('combined'));
+const allowedOrigins = ['http://localhost:5173', 'http://localhost:3000', 'http://localhost:3001'];
+if (process.env.FRONTEND_URL) {
+  allowedOrigins.push(process.env.FRONTEND_URL);
+}
+
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:3000', 'http://localhost:3001'],
+  origin: function (origin, callback) {
+    // allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
+      return callback(null, false); // Block other CORS
+    }
+    return callback(null, true);
+  },
   credentials: true
 }));
 app.use(express.json());
